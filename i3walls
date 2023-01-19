@@ -1,0 +1,155 @@
+#!/bin/sh
+
+# Manage wallpapers in groups of 'themes'.
+# Launch standalone with no argument to manage and assign themes.
+# Give a wallpaper image as an argument to add to an existing or new theme.
+
+# i3-msg floating enable
+
+# Globals
+SYMLINKPATH="$HOME/.config/i3/i3walls-files"
+CURRENT_THEME_FILE="${SYMLINKPATH}/current-theme.txt"
+THEMES_FILE="${SYMLINKPATH}/current-themes.txt"
+CURRENT_THEME_NAME=$(< ${CURRENT_THEME_FILE})
+THEMES=$(< ${SYMLINKPATH}/current-themes.txt)
+THEME=''
+declare -a PIX
+
+# The program runs in one of two modes - with or without a file path argument.
+# If a file is passed in as an argument we ask if it is to be added to a 
+# new or existing theme.
+if [[ "$1" ]]; then
+  DIR="$( cd "$( dirname "$1" )" && pwd )"
+  PICTOADD="$1"
+  shift
+  PICSTOADD=("$@")
+  
+  PROGS=(
+    "add to existing theme?"
+    "add to new theme?"
+    "quit"
+  )
+else
+  PROGS=(
+    "show current wallpapers"
+    "set theme"
+    "edit a theme"
+    "show themes"
+    "new theme"
+    "quit"
+  )
+fi
+
+_removeSymLinks() {
+  rm "${SYMLINKPATH}/pic_"*
+}
+
+_setLinks() {
+  COUNT=1
+  while read line; do
+    LINK="${SYMLINKPATH}/pic_0${COUNT}"
+    ln -s $line $LINK
+    ((COUNT=COUNT+1))
+  done < "${SYMLINKPATH}/${CURRENT_THEME_NAME}"
+
+  i3-msg restart
+}
+
+_list_choose_theme() {
+  echo 'Themes:'
+  echo $THEMES
+  declare -a THMS=("${THEMES[@]}")
+  THEME=$(gum choose $THMS)
+  PIX="${SYMLINKPATH}/${THEME}"
+}
+
+showCurrentWalls() {
+  echo "Current Wallpapers in theme file $CURRENT_THEME_NAME"
+  # Give sxiv a file that contains a list of image paths 
+  # rather than the list directly.
+  PIX="${SYMLINKPATH}/${CURRENT_THEME_NAME}"
+  sxiv -it < $PIX
+}
+
+setTheme() {
+  echo 'Choose Theme:'
+  declare -a THMS=("${THEMES[@]}")
+  CURRENT_THEME_NAME=$(gum choose $THMS)
+  echo "$CURRENT_THEME_NAME" > ${CURRENT_THEME_FILE}
+
+  # Now empty out the old symlinks
+  _removeSymLinks
+  _setLinks
+}
+
+editTheme() {
+  echo 'editTheme'
+  _list_choose_theme
+  nvim $PIX
+}
+
+showThemes() {
+  _list_choose_theme
+  sxiv -it < $PIX
+}
+
+addToTheme() {
+  _list_choose_theme
+  echo "${PICTOADD}" >> $PIX
+
+  if [[ "${#PICSTOADD[@]}" -gt 0 ]]; then
+    for P in "${!PICSTOADD[@]}"; do
+      echo "${PICSTOADD[$P]}" >> $PIX
+    done
+  fi
+}
+
+newTheme() {
+  DIRNAME=$(gum input --header="type a theme name")
+  mkdir $DIRNAME
+  echo "walls.$DIRNAME" >> $THEMES_FILE
+  touch "$SYMLINKPATH/walls.$DIRNAME"
+}
+
+main() {
+  PROG=$(gum choose "${PROGS[@]}")
+
+  case $PROG in
+    "show current wallpapers")
+      showCurrentWalls
+      ;;
+
+    "set theme")
+      setTheme
+      ;;
+
+    "edit a theme")
+      editTheme
+      ;;
+
+    "show themes")
+      showThemes
+      ;;
+
+    "new theme")
+      newTheme
+      ;;
+
+    "add to existing theme?")
+      echo 'adding'
+      addToTheme
+      ;;
+
+    "add to new theme?")
+      echo 'new'
+      ;;
+
+    "quit")
+      exit
+    ;;
+  esac
+
+  main
+}
+
+main
