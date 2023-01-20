@@ -1,9 +1,28 @@
-# WIP
-#
 #!/bin/bash
 
-# symlink ~/code/i3walls/i3walls-files/ to ~/.config/i3/i3walls-files
-# or generate the directory with its files.
+USER_PATH="/home/$USER/code/i3walls"
+
+make_files() {
+  mkdir "$USER_PATH/spong"
+  cp "$USER_PATH/defaults/current-theme.txt" "$USER_PATH/spong/current-theme.txt"
+  cp "$USER_PATH/defaults/current-themes.txt" "$USER_PATH/spong/current-themes.txt"
+  touch "$USER_PATH/spong/walls.default"
+}
+
+populate_files() {
+  echo "walls.default" > "$USER_PATH/spong/current-theme.txt"
+  echo "walls.default" > "$USER_PATH/spong/current-themes.txt"
+  ln -s "$USER_PATH/defaults/1.jpg" "$USER_PATH/spong/pic_01"
+  ln -s "$USER_PATH/defaults/2.jpg" "$USER_PATH/spong/pic_02"
+  ln -s "$USER_PATH/defaults/3.jpg" "$USER_PATH/spong/pic_03"
+  ln -s "$USER_PATH/defaults/4.jpg" "$USER_PATH/spong/pic_04"
+  ln -s "$USER_PATH/defaults/5.jpg" "$USER_PATH/spong/pic_05"
+  ln -s "$USER_PATH/defaults/6.jpg" "$USER_PATH/spong/pic_06"
+  ln -s "$USER_PATH/defaults/7.jpg" "$USER_PATH/spong/pic_07"
+}
+
+make_files
+populate_files
 
 # Update ~/.config/i3/config:85 with:
 
