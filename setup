@@ -1,19 +1,25 @@
+# WIP
+#
 #!/bin/bash
 
-# symlink ./i3walls/i3walls-files/ to ~/.config/i3/i3walls-files
-# Update .config/i3/config:85 with:
+# symlink ~/code/i3walls/i3walls-files/ to ~/.config/i3/i3walls-files
+# or generate the directory with its files.
 
-# Do a background alias so we can have a random background on each workspace.
-set $dofeh exec --no-startup-id feh --bg-scale 
+# Update ~/.config/i3/config:85 with:
 
-# switch to workspace
-bindsym $mod+1 workspace $ws1; $dofeh ~/.config/i3/walls/pic_01
-bindsym $mod+2 workspace $ws2; $dofeh ~/.config/i3/walls/pic_02
-bindsym $mod+3 workspace $ws3; $dofeh ~/.config/i3/walls/pic_03
-bindsym $mod+4 workspace $ws4; $dofeh ~/.config/i3/walls/pic_04
-bindsym $mod+5 workspace $ws5; $dofeh ~/.config/i3/walls/pic_05
-bindsym $mod+6 workspace $ws6; $dofeh ~/.config/i3/walls/pic_06
-bindsym $mod+7 workspace $ws7; $dofeh ~/.config/i3/walls/pic_07
-bindsym $mod+8 workspace $ws8; $dofeh --randomize ~/wallpapers/
-bindsym $mod+9 workspace $ws9; $dofeh --randomize ~/wallpapers/
-bindsym $mod+10 workspace $ws10; $dofeh --randomize ~/wallpapers/
+# # Do a background alias so we can have a random background on each workspace.
+# # set $dofeh exec --no-startup-id feh --bg-scale 
+#
+# # switch to workspace
+# # bindsym $mod+1 workspace $ws1; $dofeh ~/.config/i3/walls/pic_01
+# # bindsym $mod+2 workspace $ws2; $dofeh ~/.config/i3/walls/pic_02
+# # bindsym $mod+3 workspace $ws3; $dofeh ~/.config/i3/walls/pic_03
+# # bindsym $mod+4 workspace $ws4; $dofeh ~/.config/i3/walls/pic_04
+# # bindsym $mod+5 workspace $ws5; $dofeh ~/.config/i3/walls/pic_05
+# # bindsym $mod+6 workspace $ws6; $dofeh ~/.config/i3/walls/pic_06
+# # bindsym $mod+7 workspace $ws7; $dofeh ~/.config/i3/walls/pic_07
+# # bindsym $mod+8 workspace $ws8; $dofeh --randomize ~/wallpapers/
+# # bindsym $mod+9 workspace $ws9; $dofeh --randomize ~/wallpapers/
+# # bindsym $mod+10 workspace $ws10; $dofeh --randomize ~/wallpapers/
+
+# sudo ln -s ~/code/i3walls/i3walls /usr/local/bin/i3walls
