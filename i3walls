@@ -85,7 +85,7 @@ setTheme() {
 editTheme() {
   echo 'editTheme'
   _list_choose_theme
-  nvim $PIX
+  $EDITOR $PIX
 }
 
 showThemes() {
