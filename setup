@@ -1,24 +1,29 @@
 #!/bin/bash
 
-USER_PATH="/home/$USER/code/i3walls"
+INSTALL_PATH="/home/$USER/.config/i3"
+SCRIPT_PATH="$(cd -- "$SCRIPT_PATH" && pwd)"
+if [[ -z "$SCRIPT_PATH" ]] ; then
+  exit 1  # fail
+fi
 
 make_files() {
-  mkdir "$USER_PATH/spong"
-  cp "$USER_PATH/defaults/current-theme.txt" "$USER_PATH/spong/current-theme.txt"
-  cp "$USER_PATH/defaults/current-themes.txt" "$USER_PATH/spong/current-themes.txt"
-  touch "$USER_PATH/spong/walls.default"
+  if [[ ! -d "$INSTALL_PATH/i3walls" ]]; then
+    mkdir "$INSTALL_PATH/i3walls"
+    cp "$SCRIPT_PATH/defaults/current-theme.txt" "$INSTALL_PATH/i3walls/current-theme.txt"
+    cp "$SCRIPT_PATH/defaults/current-themes.txt" "$INSTALL_PATH/i3walls/current-themes.txt"
+    touch "$INSTALL_PATH/i3walls/walls.default"
+  fi
+
+  if [[ ! -f /usr/local/bin/i3walls ]]; then
+    sudo ln -s "$SCRIPT_PATH/i3walls" /usr/local/bin/i3walls
+  fi
 }
 
 populate_files() {
-  echo "walls.default" > "$USER_PATH/spong/current-theme.txt"
-  echo "walls.default" > "$USER_PATH/spong/current-themes.txt"
-  ln -s "$USER_PATH/defaults/1.jpg" "$USER_PATH/spong/pic_01"
-  ln -s "$USER_PATH/defaults/2.jpg" "$USER_PATH/spong/pic_02"
-  ln -s "$USER_PATH/defaults/3.jpg" "$USER_PATH/spong/pic_03"
-  ln -s "$USER_PATH/defaults/4.jpg" "$USER_PATH/spong/pic_04"
-  ln -s "$USER_PATH/defaults/5.jpg" "$USER_PATH/spong/pic_05"
-  ln -s "$USER_PATH/defaults/6.jpg" "$USER_PATH/spong/pic_06"
-  ln -s "$USER_PATH/defaults/7.jpg" "$USER_PATH/spong/pic_07"
+  for i in {1..7}; do
+    ln -s "$SCRIPT_PATH/defaults/$i.jpg" "$INSTALL_PATH/i3walls/pic_$i"
+    echo "$SCRIPT_PATH/defaults/$i.jpg" >> "$INSTALL_PATH/i3walls/walls.default"
+  done
 }
 
 make_files
@@ -30,15 +35,13 @@ populate_files
 # # set $dofeh exec --no-startup-id feh --bg-scale 
 #
 # # switch to workspace
-# # bindsym $mod+1 workspace $ws1; $dofeh ~/.config/i3/walls/pic_01
-# # bindsym $mod+2 workspace $ws2; $dofeh ~/.config/i3/walls/pic_02
-# # bindsym $mod+3 workspace $ws3; $dofeh ~/.config/i3/walls/pic_03
-# # bindsym $mod+4 workspace $ws4; $dofeh ~/.config/i3/walls/pic_04
-# # bindsym $mod+5 workspace $ws5; $dofeh ~/.config/i3/walls/pic_05
-# # bindsym $mod+6 workspace $ws6; $dofeh ~/.config/i3/walls/pic_06
-# # bindsym $mod+7 workspace $ws7; $dofeh ~/.config/i3/walls/pic_07
+# # bindsym $mod+1 workspace $ws1; $dofeh ~/.config/i3/walls/pic_1
+# # bindsym $mod+2 workspace $ws2; $dofeh ~/.config/i3/walls/pic_2
+# # bindsym $mod+3 workspace $ws3; $dofeh ~/.config/i3/walls/pic_3
+# # bindsym $mod+4 workspace $ws4; $dofeh ~/.config/i3/walls/pic_4
+# # bindsym $mod+5 workspace $ws5; $dofeh ~/.config/i3/walls/pic_5
+# # bindsym $mod+6 workspace $ws6; $dofeh ~/.config/i3/walls/pic_6
+# # bindsym $mod+7 workspace $ws7; $dofeh ~/.config/i3/walls/pic_7
 # # bindsym $mod+8 workspace $ws8; $dofeh --randomize ~/wallpapers/
 # # bindsym $mod+9 workspace $ws9; $dofeh --randomize ~/wallpapers/
 # # bindsym $mod+10 workspace $ws10; $dofeh --randomize ~/wallpapers/
-
-# sudo ln -s ~/code/i3walls/i3walls /usr/local/bin/i3walls

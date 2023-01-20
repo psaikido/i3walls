@@ -7,7 +7,7 @@
 # i3-msg floating enable
 
 # Globals
-SYMLINKPATH="$HOME/.config/i3/i3walls-files"
+SYMLINKPATH="$HOME/.config/i3/i3walls"
 CURRENT_THEME_FILE="${SYMLINKPATH}/current-theme.txt"
 THEMES_FILE="${SYMLINKPATH}/current-themes.txt"
 CURRENT_THEME_NAME=$(< ${CURRENT_THEME_FILE})
@@ -47,7 +47,7 @@ _removeSymLinks() {
 _setLinks() {
   COUNT=1
   while read line; do
-    LINK="${SYMLINKPATH}/pic_0${COUNT}"
+    LINK="${SYMLINKPATH}/pic_${COUNT}"
     ln -s $line $LINK
     ((COUNT=COUNT+1))
   done < "${SYMLINKPATH}/${CURRENT_THEME_NAME}"
