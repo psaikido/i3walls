@@ -27,6 +27,9 @@ populate_files() {
 }
 
 update_config() {
+  # Backup the original i3 config
+  cp "$INSTALL_PATH/config" "$INSTALL_PATH/config.bk"
+
   # Add the 'dofeh' line
   sed -i 's/set $ws10 "10"/set $ws10 "10"\n\n#i3walls\nset $dofeh exec --no-startup-id feh --bg-scale/' "$INSTALL_PATH/config"
 
