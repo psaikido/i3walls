@@ -46,7 +46,7 @@ i3walls can be given one or many file paths as arguments eg:
 Ranger and similar programs can choose a bunch of images in one go and then i3walls can be called to open them. In ranger, select the files, press 'r' and type 'i3walls' in the 'open_with' dialog. When used this way the user gets the following menu:
 
 - "add to existing theme?"
-	Choose one of the defined themes to add the files to. More than 7 can be added but only the first 7 will be used.
+	Choose one of the defined themes to add the files to.
 
 - "add to new theme?"
 	Choose a theme name and the files will be created
