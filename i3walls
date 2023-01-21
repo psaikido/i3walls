@@ -4,8 +4,6 @@
 # Launch standalone with no argument to manage and assign themes.
 # Give a wallpaper image as an argument to add to an existing or new theme.
 
-# i3-msg floating enable
-
 # Globals
 SYMLINKPATH="$HOME/.config/i3/i3walls"
 CURRENT_THEME_FILE="${SYMLINKPATH}/current-theme.txt"
@@ -25,8 +23,8 @@ if [[ "$1" ]]; then
   PICSTOADD=("$@")
   
   PROGS=(
-    "add to existing theme?"
-    "add to new theme?"
+    "choose a theme"
+    #"add to new theme?"
     "quit"
   )
 else
@@ -105,10 +103,9 @@ addToTheme() {
 }
 
 newTheme() {
-  DIRNAME=$(gum input --header="type a theme name")
-  mkdir $DIRNAME
-  echo "walls.$DIRNAME" >> $THEMES_FILE
-  touch "$SYMLINKPATH/walls.$DIRNAME"
+  NEWNAME=$(gum input --header="type a theme name")
+  echo "walls.$NEWNAME" >> $THEMES_FILE
+  touch "$SYMLINKPATH/walls.$NEWNAME"
 }
 
 main() {
@@ -135,14 +132,15 @@ main() {
       newTheme
       ;;
 
-    "add to existing theme?")
-      echo 'adding'
+    "choose a theme")
       addToTheme
       ;;
 
-    "add to new theme?")
-      echo 'new'
-      ;;
+    # "add to new theme?")
+    #   newTheme
+    #   THEMES_FILE="${SYMLINKPATH}/current-themes.txt"
+    #   addToTheme
+    #   ;;
 
     "quit")
       exit
