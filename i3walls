@@ -11,6 +11,8 @@ THEMES_FILE="${SYMLINKPATH}/current-themes.txt"
 CURRENT_THEME_NAME=$(< ${CURRENT_THEME_FILE})
 THEMES=$(< ${SYMLINKPATH}/current-themes.txt)
 THEME=''
+PICTOADD=''
+PICSTOADD=''
 declare -a PIX
 
 # The program runs in one of two modes - with or without a file path argument.
@@ -104,9 +106,9 @@ addToTheme() {
 
 newTheme() {
   NEWNAME=$(gum input --header="type a theme name")
-  echo "$NEWNAME" >> $THEMES_FILE
-  touch "$SYMLINKPATH/$NEWNAME"
-  THEME="$NEWNAME"
+  echo "walls.$NEWNAME" >> $THEMES_FILE
+  touch "$SYMLINKPATH/walls.$NEWNAME"
+  THEME="walls.$NEWNAME"
 }
 
 deleteTheme() {
@@ -152,6 +154,7 @@ main() {
 
     "add to new theme")
       newTheme
+      PIX="${SYMLINKPATH}/${THEME}"
       addToTheme
       ;;
 
