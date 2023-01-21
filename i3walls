@@ -23,8 +23,8 @@ if [[ "$1" ]]; then
   PICSTOADD=("$@")
   
   PROGS=(
-    "choose a theme"
-    #"add to new theme?"
+    "add to existing theme"
+    "add to new theme"
     "quit"
   )
 else
@@ -34,6 +34,7 @@ else
     "edit a theme"
     "show themes"
     "new theme"
+    "delete theme"
     "quit"
   )
 fi
@@ -92,7 +93,6 @@ showThemes() {
 }
 
 addToTheme() {
-  _list_choose_theme
   echo "${PICTOADD}" >> $PIX
 
   if [[ "${#PICSTOADD[@]}" -gt 0 ]]; then
@@ -104,8 +104,15 @@ addToTheme() {
 
 newTheme() {
   NEWNAME=$(gum input --header="type a theme name")
-  echo "walls.$NEWNAME" >> $THEMES_FILE
-  touch "$SYMLINKPATH/walls.$NEWNAME"
+  echo "$NEWNAME" >> $THEMES_FILE
+  touch "$SYMLINKPATH/$NEWNAME"
+  THEME="$NEWNAME"
+}
+
+deleteTheme() {
+  rm "$SYMLINKPATH/$THEME"
+  sed -i "/$THEME/d" $THEMES_FILE
+  THEMES=$(< "$THEMES_FILE")
 }
 
 main() {
@@ -130,17 +137,23 @@ main() {
 
     "new theme")
       newTheme
+      THEMES=$(< ${SYMLINKPATH}/current-themes.txt)
       ;;
 
-    "choose a theme")
+    "delete theme")
+      _list_choose_theme
+      deleteTheme
+      ;;
+
+    "add to existing theme")
+      _list_choose_theme
       addToTheme
       ;;
 
-    # "add to new theme?")
-    #   newTheme
-    #   THEMES_FILE="${SYMLINKPATH}/current-themes.txt"
-    #   addToTheme
-    #   ;;
+    "add to new theme")
+      newTheme
+      addToTheme
+      ;;
 
     "quit")
       exit
