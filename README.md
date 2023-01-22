@@ -3,6 +3,8 @@
 Set groups of wallpapers as 'themes', one wallpaper for each of ten workspaces on [i3wm](https://i3wm.org/).  
 This is a bash script so will only work in *nix environments.  
 
+[youtube demo](https://youtu.be/4TBYd8TkRoY)
+
 ## Setup
 
 `git clone https://github.com/psaikido/i3walls`  
