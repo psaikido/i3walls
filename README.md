@@ -3,7 +3,7 @@
 Set groups of wallpapers as 'themes', one wallpaper for each of ten workspaces on [i3wm](https://i3wm.org/).  
 This is a bash script so will only work in *nix environments.  
 
-[youtube demo](https://youtu.be/4TBYd8TkRoY)
+![i3demo-3](https://user-images.githubusercontent.com/208479/214102327-d620f66c-8440-4125-af0c-3265f299b1a9.gif)
 
 ## Setup
 
