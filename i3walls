@@ -14,6 +14,8 @@ THEME=''
 PICTOADD=''
 PICSTOADD=''
 TXTCLR="#d65d0e"
+PICTOADD=''
+PICSTOADD=''
 declare -a PIX
 
 # The program runs in one of two modes - with or without a file path argument.
@@ -35,6 +37,7 @@ else
     "show current wallpapers"
     "set theme"
     "edit a theme"
+		"choose a wallpaper"
     "show themes"
     "new theme"
     "delete theme"
@@ -59,14 +62,14 @@ _setLinks() {
 
 _list_choose_theme() {
   echo $(gum style --foreground $TXTCLR 'Themes:')
-  echo $THEMES
   declare -a THMS=("${THEMES[@]}")
-  THEME=$(gum choose --cursor.foreground $TXTCLR$THMS)
+  THEME=$(gum choose --cursor.foreground $TXTCLR $THMS)
   PIX="${SYMLINKPATH}/${THEME}"
 }
 
 showCurrentWalls() {
   echo "Current Wallpapers in theme file $CURRENT_THEME_NAME"
+	echo $(gum style -- foreground $TXTCLR "Current Wallpapers in theme file $CURRENT_THEME_NAME")
   # Give sxiv a file that contains a list of image paths 
   # rather than the list directly.
   PIX="${SYMLINKPATH}/${CURRENT_THEME_NAME}"
@@ -74,7 +77,7 @@ showCurrentWalls() {
 }
 
 setTheme() {
-  echo 'Choose Theme:'
+	echo $(gum style -- foreground $TXTCLR 'Choose Theme:')
   declare -a THMS=("${THEMES[@]}")
   CURRENT_THEME_NAME=$(gum choose --cursor.foreground $TXTCLR $THMS)
   echo "$CURRENT_THEME_NAME" > ${CURRENT_THEME_FILE}
@@ -85,7 +88,7 @@ setTheme() {
 }
 
 editTheme() {
-  echo 'editTheme'
+	echo $(gum style -- foreground $TXTCLR 'Edit theme:')
   _list_choose_theme
   $EDITOR $PIX
 }
@@ -117,6 +120,14 @@ deleteTheme() {
   sed -i "/$THEME/d" $THEMES_FILE
   THEMES=$(< "$THEMES_FILE")
 }
+
+chooseWallpaper() {
+	WALL=$(gum file ~)
+  _list_choose_theme
+  echo "$WALL" >> "$PIX"
+  sxiv -it < $PIX
+}
+
 
 main() {
   gum style \
@@ -166,6 +177,10 @@ main() {
       PIX="${SYMLINKPATH}/${THEME}"
       addToTheme
       ;;
+
+		"choose a wallpaper")
+			chooseWallpaper
+			;;
 
     "quit")
       exit
