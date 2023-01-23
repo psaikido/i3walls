@@ -13,6 +13,7 @@ THEMES=$(< ${SYMLINKPATH}/current-themes.txt)
 THEME=''
 PICTOADD=''
 PICSTOADD=''
+TXTCLR="#d65d0e"
 declare -a PIX
 
 # The program runs in one of two modes - with or without a file path argument.
@@ -20,9 +21,9 @@ declare -a PIX
 # new or existing theme.
 if [[ "$1" ]]; then
   DIR="$( cd "$( dirname "$1" )" && pwd )"
-  PICTOADD="$1"
+  $PICTOADD="$1"
   shift
-  PICSTOADD=("$@")
+  $PICSTOADD=("$@")
   
   PROGS=(
     "add to existing theme"
@@ -57,10 +58,10 @@ _setLinks() {
 }
 
 _list_choose_theme() {
-  echo 'Themes:'
+  echo $(gum style --foreground $TXTCLR 'Themes:')
   echo $THEMES
   declare -a THMS=("${THEMES[@]}")
-  THEME=$(gum choose $THMS)
+  THEME=$(gum choose --cursor.foreground $TXTCLR$THMS)
   PIX="${SYMLINKPATH}/${THEME}"
 }
 
@@ -75,7 +76,7 @@ showCurrentWalls() {
 setTheme() {
   echo 'Choose Theme:'
   declare -a THMS=("${THEMES[@]}")
-  CURRENT_THEME_NAME=$(gum choose $THMS)
+  CURRENT_THEME_NAME=$(gum choose --cursor.foreground $TXTCLR $THMS)
   echo "$CURRENT_THEME_NAME" > ${CURRENT_THEME_FILE}
 
   # Now empty out the old symlinks
@@ -118,7 +119,15 @@ deleteTheme() {
 }
 
 main() {
-  PROG=$(gum choose "${PROGS[@]}")
+  gum style \
+    --border normal \
+    --border-foreground $TXTCLR \
+    --foreground $TXTCLR \
+    --margin 1 \
+    --padding 1 \
+    "i3walls - manage wallpapers in themes"
+
+  PROG=$( gum choose --cursor.foreground $TXTCLR --limit 1 "${PROGS[@]}" )
 
   case $PROG in
     "show current wallpapers")
